@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="description" content="Anonymous project page for an ICRA submission on adaptive contact for robotic tactile Braille recognition." />
+    <title>Can a Robot Read Braille?</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Newsreader:opsz,wght@6..72,500;6..72,600&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="tokens.css" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <a class="wordmark" href="#top" aria-label="Back to top">TACTILE / BRAILLE</a>
+      <nav aria-label="Main navigation">
+        <a href="#method">Method</a><a href="#results">Results</a><a href="#media">Media</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" id="top" aria-labelledby="page-title">
+        <div class="hero-copy">
+          <p class="eyebrow">Anonymous ICRA submission · 2027</p>
+          <h1 id="page-title">Can a Robot<br />Read <span>Braille?</span></h1>
+          <p class="lede">Learning to adapt physical contact from tactile observations before reconstructing and reading Braille.</p>
+          <a class="text-link" href="#method">Explore the system <span aria-hidden="true">↓</span></a>
+        </div>
+        <figure class="hero-figure">
+          <img src="assets/motivision.png" width="1200" height="796" alt="A tactile sensor mounted on a robot approaches a Braille plate." />
+          <figcaption>Contact quality is part of the reading problem.</figcaption>
+        </figure>
+      </section>
+
+      <section class="abstract section-rule" aria-labelledby="abstract-title">
+        <div><p class="eyebrow">Abstract</p></div>
+        <div>
+          <h2 id="abstract-title">Readable touch is not guaranteed by a single press.</h2>
+          <p>Robotic Braille reading requires both tactile recognition and contact that preserves Braille-dot geometry. We introduce an image-conditioned adaptive-contact framework that assesses contact quality, corrects unsuitable contact, and fuses retained tactile observations for Braille reconstruction.</p>
+        </div>
+      </section>
+
+      <section class="method" id="method" aria-labelledby="method-title">
+        <div class="section-heading">
+          <p class="eyebrow">System map</p>
+          <h2 id="method-title">Demonstration → correction → reconstruction.</h2>
+          <p>One closed loop connects expert-guided examples to physical re-contact and pose-aware tactile fusion.</p>
+        </div>
+        <figure class="system-figure">
+          <img src="assets/overall.png" width="1600" height="688" alt="Overview of the proposed system from demonstrations to closed-loop contact adaptation and Braille reconstruction." loading="lazy" />
+          <figcaption>Overview of the proposed framework.</figcaption>
+        </figure>
+        <ol class="steps">
+          <li><span>01</span><div><h3>Learn what readable contact looks like.</h3><p>Grouped expert demonstrations label each tactile observation as acceptable or unsuitable, with correction targets pointing to the final accepted contact.</p></div></li>
+          <li><span>02</span><div><h3>Assess, retract, and correct.</h3><p>A multi-head policy predicts contact quality and corrections for pressing distance, roll, and pitch. The robot re-contacts only when needed.</p></div></li>
+          <li><span>03</span><div><h3>Fuse retained tactile evidence.</h3><p>Accepted tactile image–pose pairs are registered, refined into dot geometry, and organized for structured Braille decoding.</p></div></li>
+        </ol>
+      </section>
+
+      <section class="demonstration section-rule" aria-labelledby="demonstration-title">
+        <div class="section-heading compact"><p class="eyebrow">Learning signal</p><h2 id="demonstration-title">One demonstration group, multiple useful corrections.</h2></div>
+        <figure>
+          <img src="assets/human_demonstration.png" width="1200" height="838" alt="Expert-guided tactile contact demonstrations, with rejected contact images and a final accepted contact." loading="lazy" />
+          <figcaption>Each rejected contact becomes a supervised correction sample; the accepted contact has a zero correction target.</figcaption>
+        </figure>
+      </section>
+
+      <section class="results" id="results" aria-labelledby="results-title">
+        <div class="results-intro">
+          <p class="eyebrow">Physical evaluation</p>
+          <h2 id="results-title">94.0<span>%</span></h2>
+          <p>local contact success with joint position-and-orientation correction on held-out physical Braille plates.</p>
+        </div>
+        <div class="result-detail">
+          <p class="callout">The full strategy improves contact quality with fewer attempts than the correction baselines.</p>
+          <div class="metrics" aria-label="Key results">
+            <div><strong>92.8%</strong><span>contact-quality F1</span></div>
+            <div><strong>88.6%</strong><span>pooled Braille-cell accuracy</span></div>
+            <div><strong>80.0%</strong><span>exact line accuracy</span></div>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <caption>Online Braille reading results. Higher is better except attempts/location.</caption>
+            <thead><tr><th scope="col">Strategy</th><th scope="col">Attempts / loc.</th><th scope="col">Contact success</th><th scope="col">Cell accuracy (C / E / all)</th><th scope="col">Line accuracy</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Single-press</th><td>1.00</td><td>61.4%</td><td>62.5 / 65.9 / 64.0%</td><td>32.5%</td></tr>
+              <tr><th scope="row">Retry-only</th><td>2.36</td><td>62.9%</td><td>62.5 / 66.8 / 64.4%</td><td>32.5%</td></tr>
+              <tr><th scope="row">Position-only</th><td>1.84</td><td>81.9%</td><td>79.6 / 80.5 / 80.0%</td><td>60.0%</td></tr>
+              <tr class="ours"><th scope="row">Full (ours)</th><td>1.42</td><td>94.0%</td><td>88.9 / 88.2 / 88.6%</td><td>80.0%</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="media section-rule" id="media" aria-labelledby="media-title">
+        <div class="section-heading"><p class="eyebrow">Closed-loop acquisition</p><h2 id="media-title">Reject degraded tactile evidence before it contaminates reconstruction.</h2></div>
+        <figure>
+          <img src="assets/adaptive.png" width="1600" height="673" alt="Representative closed-loop adaptive Braille acquisition showing accepted and rejected tactile contacts." loading="lazy" />
+          <figcaption>Representative acquisition using the full correction strategy.</figcaption>
+        </figure>
+      </section>
+
+      <section class="platform" aria-labelledby="platform-title">
+        <div><p class="eyebrow">Platform</p><h2 id="platform-title">A tactile sensor, a robot arm, and physical Braille plates.</h2><p>Evaluation uses an xArm7 robot, an optical tactile sensor, a custom adapter, and Chinese and English Braille plates. The held-out policy test reports a 92.8% contact-quality F1 with a 5.9% classification error.</p></div>
+        <figure><img src="assets/EXPERIMENT SETUP.png" width="1200" height="900" alt="Experimental setup with xArm7 robot, tactile sensor, and Braille plate." loading="lazy" /></figure>
+      </section>
+    </main>
+    <footer><p>Anonymous project page · intended for double-blind review</p><p>Links and author information will be added only after review.</p></footer>
+  </body>
+</html>
